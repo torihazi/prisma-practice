@@ -34,5 +34,6 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@index([email])
+  @@index([userName])
   @@map("users")
 }
