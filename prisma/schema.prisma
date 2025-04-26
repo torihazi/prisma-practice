@@ -14,9 +14,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator zod {
+  provider                         = "zod-prisma-types"
+  useMultipleFiles                 = true
+  writeBarrelFiles                 = true
+  createOptionalDefaultValuesTypes = true
+  createRelationsValuesTypes       = true
+  createPartialTypes               = true
+}
+
 model User {
   id        Int      @id @default(autoincrement())
+  /// @zod.string.min(1, { message: "user name is required" }).max(30, { message: "user name must be less than 30 characters" })
   userName  String   @unique @map("user_name") @db.VarChar(30)
+  /// @zod.string.email().min(1, { message: "email is required" }).max(255, { message: "email must be less than 255 characters" })
   email     String   @unique @db.VarChar(255)
   password  String
   createdAt DateTime @default(now()) @map("created_at")
