@@ -2,9 +2,10 @@ import prisma from "@/lib/prisma";
 import { UserCreateInputSchema } from "../../../../prisma/generated/zod/inputTypeSchemas/UserCreateInputSchema";
 import { requestPasswordSchema } from "@/schemas/userSchema";
 import bcrypt from "bcryptjs";
+import { withErrorHandler } from "@/lib/api/handler";
 
-export async function POST(request: Request) {
-  const res = await request.json();
+export const POST = withErrorHandler(async (req: Request) => {
+  const res = await req.json();
   const bodyValidation = UserCreateInputSchema.safeParse(res);
   if (!bodyValidation.success) {
     return Response.json(
@@ -30,29 +31,26 @@ export async function POST(request: Request) {
   const passwordValidation = requestPasswordSchema.safeParse(password);
   if (!passwordValidation.success) {
     return Response.json(
-      { error: passwordValidation.error.errors },
+      {
+        error: passwordValidation.error.errors
+          .map((error) => error.message)
+          .join(","),
+      },
       { status: 400 }
     );
   }
 
   const hash = bcrypt.hashSync(passwordValidation.data, 10);
 
-  try {
-    const user = await prisma.user.create({
-      select: {
-        id: true,
-      },
-      data: {
-        userName,
-        email,
-        password: hash,
-      },
-    });
-    return Response.json(user);
-  } catch (error) {
-    return Response.json(
-      { error: "ユーザの作成に失敗しました" },
-      { status: 500 }
-    );
-  }
-}
+  const user = await prisma.user.create({
+    select: {
+      id: true,
+    },
+    data: {
+      userName,
+      email,
+      password: hash,
+    },
+  });
+  return Response.json(user);
+});
