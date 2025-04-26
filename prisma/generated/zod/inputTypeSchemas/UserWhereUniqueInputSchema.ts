@@ -8,35 +8,35 @@ import { DateTimeFilterSchema } from './DateTimeFilterSchema';
 export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> = z.union([
   z.object({
     id: z.number().int(),
-    userName: z.string().min(1, { message: "user name is required" }).max(30, { message: "user name must be less than 30 characters" }),
-    email: z.string().email().min(1, { message: "email is required" }).max(255, { message: "email must be less than 255 characters" })
+    userName: z.string().min(1).max(30),
+    email: z.string().email().min(1).max(255)
   }),
   z.object({
     id: z.number().int(),
-    userName: z.string().min(1, { message: "user name is required" }).max(30, { message: "user name must be less than 30 characters" }),
+    userName: z.string().min(1).max(30),
   }),
   z.object({
     id: z.number().int(),
-    email: z.string().email().min(1, { message: "email is required" }).max(255, { message: "email must be less than 255 characters" }),
+    email: z.string().email().min(1).max(255),
   }),
   z.object({
     id: z.number().int(),
   }),
   z.object({
-    userName: z.string().min(1, { message: "user name is required" }).max(30, { message: "user name must be less than 30 characters" }),
-    email: z.string().email().min(1, { message: "email is required" }).max(255, { message: "email must be less than 255 characters" }),
+    userName: z.string().min(1).max(30),
+    email: z.string().email().min(1).max(255),
   }),
   z.object({
-    userName: z.string().min(1, { message: "user name is required" }).max(30, { message: "user name must be less than 30 characters" }),
+    userName: z.string().min(1).max(30),
   }),
   z.object({
-    email: z.string().email().min(1, { message: "email is required" }).max(255, { message: "email must be less than 255 characters" }),
+    email: z.string().email().min(1).max(255),
   }),
 ])
 .and(z.object({
   id: z.number().int().optional(),
-  userName: z.string().min(1, { message: "user name is required" }).max(30, { message: "user name must be less than 30 characters" }).optional(),
-  email: z.string().email().min(1, { message: "email is required" }).max(255, { message: "email must be less than 255 characters" }).optional(),
+  userName: z.string().min(1).max(30).optional(),
+  email: z.string().email().min(1).max(255).optional(),
   AND: z.union([ z.lazy(() => UserWhereInputSchema),z.lazy(() => UserWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => UserWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => UserWhereInputSchema),z.lazy(() => UserWhereInputSchema).array() ]).optional(),
