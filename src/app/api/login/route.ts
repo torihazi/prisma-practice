@@ -2,15 +2,12 @@ import prisma from "@/lib/prisma";
 import { requestLoginSchema } from "@/schemas/userSchema";
 import bcrypt from "bcryptjs";
 import { withErrorHandler } from "@/lib/api/handler";
-
+import { validateRequest } from "@/lib/api/validation";
 export const POST = withErrorHandler(async (req: Request) => {
   const res = await req.json();
-  const bodyValidation = requestLoginSchema.safeParse(res);
+  const bodyValidation = validateRequest(res, requestLoginSchema);
   if (!bodyValidation.success) {
-    return Response.json(
-      { error: bodyValidation.error.errors },
-      { status: 400 }
-    );
+    return bodyValidation.error;
   }
   const { email, password } = bodyValidation.data;
 
