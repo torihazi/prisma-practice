@@ -5,7 +5,7 @@ import { withErrorHandler } from "@/lib/api/handler";
 import { validateRequest } from "@/lib/api/validation";
 import { setAuthToken, singJWT } from "@/lib/api/auth";
 
-export const POST = withErrorHandler(async (req: Request) => {
+export const POST = withErrorHandler(async (req: NextRequest) => {
   const res = await req.json();
   const bodyValidation = validateRequest(res, requestLoginSchema);
   if (!bodyValidation.success) {
