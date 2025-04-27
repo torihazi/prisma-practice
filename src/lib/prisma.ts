@@ -1,10 +1,12 @@
 import { PrismaClient } from "@/app/generated/prisma";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { USER_FIELD_NAMES } from "@/lib/constants/user";
+import { ARTICLE_FIELD_NAMES } from "@/lib/constants/article";
 import { z } from "zod";
 
 const FIELD_NAMES = {
   ...USER_FIELD_NAMES,
+  ...ARTICLE_FIELD_NAMES,
 } as const;
 
 const customErrorMap: z.ZodErrorMap = (issue, ctx) => {

@@ -6,7 +6,7 @@ export type JWTPayload = {
 };
 
 const JWT_SECRET = process.env.JWT_SECRET ?? "invalid";
-
+const COOKIE_NAME = "auth-token";
 const ISSURE = "prisma-practice";
 const AUDIENCE = "prisma-practice-audience";
 
@@ -39,11 +39,16 @@ export const verifyJWT = async (token: string): Promise<JWTPayload> => {
 export const setAuthToken = async (token: string) => {
   const cookieStore = await cookies();
 
-  cookieStore.set("auth-token", token, {
+  cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     path: "/",
     maxAge: 60 * 60 * 24,
   });
+};
+
+export const getAuthToken = async (): Promise<string | null> => {
+  const cookieStore = await cookies();
+  return cookieStore.get(COOKIE_NAME)?.value ?? null;
 };
