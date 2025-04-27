@@ -1,5 +1,9 @@
 import prisma from "@/lib/prisma";
-import { PathParams, withErrorHandler } from "@/lib/api/handler";
+import {
+  PathParams,
+  withErrorHandler,
+  withOrganizationAuth,
+} from "@/lib/api/handler";
 import { validateRequest } from "@/lib/api/validation";
 import { withAuth } from "@/lib/api/handler";
 import { NextRequest } from "next/server";
@@ -47,43 +51,16 @@ export const GET = withAuth(
   }
 );
 
-export const PUT = withAuth(
-  async (req: NextRequest, userId: number, pathParams?: PathParams) => {
-    const params = await pathParams?.params;
-    const idValidation = validateRequest(params, pathIdSchema);
-    if (!idValidation.success) {
-      return idValidation.error;
-    }
-
-    const { id } = idValidation.data;
-
+export const PUT = withOrganizationAuth(
+  async (req: NextRequest, userId: number, organizationId: number) => {
     const res = await req.json();
     const bodyValidation = validateRequest(res, OrganizationUpdateInputSchema);
     if (!bodyValidation.success) {
       return bodyValidation.error;
     }
-
-    const organization = await prisma.userOrganization.findFirst({
-      where: {
-        userId,
-        organizationId: id,
-        role: "ADMIN",
-      },
-    });
-    if (organization === null) {
-      return Response.json(
-        {
-          error: "組織が存在しない、もしくは権限がありません",
-        },
-        {
-          status: 404,
-        }
-      );
-    }
-
     const updateOrganization = await prisma.organization.update({
       where: {
-        id,
+        id: organizationId,
       },
       data: bodyValidation.data,
     });
@@ -92,36 +69,11 @@ export const PUT = withAuth(
   }
 );
 
-export const DELETE = withAuth(
-  async (req: NextRequest, userId: number, pathParams?: PathParams) => {
-    const params = await pathParams?.params;
-    const idValidation = validateRequest(params, pathIdSchema);
-    if (!idValidation.success) {
-      return idValidation.error;
-    }
-
-    const { id } = idValidation.data;
-
-    const organization = await prisma.userOrganization.findFirst({
-      where: {
-        userId,
-        organizationId: id,
-        role: "ADMIN",
-      },
-    });
-    if (organization === null) {
-      return Response.json(
-        {
-          error: "組織が存在しない、もしくは権限がありません",
-        },
-        {
-          status: 404,
-        }
-      );
-    }
+export const DELETE = withOrganizationAuth(
+  async (_req: NextRequest, _userId: number, organizationId: number) => {
     await prisma.organization.delete({
       where: {
-        id,
+        id: organizationId,
       },
     });
     return Response.json({

@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { withErrorHandler } from "@/lib/api/handler";
+import { withErrorHandler, withOrganizationAuth } from "@/lib/api/handler";
 import { validateRequest } from "@/lib/api/validation";
 import { withAuth } from "@/lib/api/handler";
 import { NextRequest } from "next/server";
@@ -7,45 +7,19 @@ import { UserOrganizationCreateInputSchema } from "../../../../../../prisma/gene
 import { PathParams } from "@/lib/api/handler";
 import { pathIdSchema } from "@/schemas/requestSchema";
 
-export const POST = withAuth(
-  async (req: NextRequest, userId: number, pathParams?: PathParams) => {
-    const params = await pathParams?.params;
-    const idValidation = validateRequest(params, pathIdSchema);
-    if (!idValidation.success) {
-      return idValidation.error;
-    }
-
-    const { id } = idValidation.data;
-
+export const POST = withOrganizationAuth(
+  async (req: NextRequest, userId: number, organizationId: number) => {
     const { userId: inviteUserId, role } = await req.json();
     const bodyValidation = validateRequest(
       {
         role,
         user: { connect: { id: inviteUserId } },
-        organization: { connect: { id } },
+        organization: { connect: { id: organizationId } },
       },
       UserOrganizationCreateInputSchema
     );
     if (!bodyValidation.success) {
       return bodyValidation.error;
-    }
-
-    const organization = await prisma.userOrganization.findFirst({
-      where: {
-        userId,
-        organizationId: id,
-        role: "ADMIN",
-      },
-    });
-    if (organization === null) {
-      return Response.json(
-        {
-          error: "組織が存在しない、もしくは権限がありません",
-        },
-        {
-          status: 404,
-        }
-      );
     }
 
     const user = await prisma.user.findUnique({
@@ -63,7 +37,7 @@ export const POST = withAuth(
     const existingUserOrganization = await prisma.userOrganization.findFirst({
       where: {
         userId: inviteUserId,
-        organizationId: id,
+        organizationId,
       },
     });
     if (existingUserOrganization !== null) {
