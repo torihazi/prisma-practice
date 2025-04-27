@@ -1,5 +1,6 @@
 import { Prisma } from "@/app/generated/prisma";
 import { USER_FIELD_NAMES } from "@/lib/constants/user";
+import { getAuthToken, verifyJWT } from "./auth";
 type ApiHandler = (req: Request) => Promise<Response>;
 
 export const withErrorHandler = (handler: ApiHandler) => {
@@ -39,4 +40,25 @@ export const getPrismaErrorMessage = (
     default:
       return "サーバーでエラーが発生しました";
   }
+};
+
+type AuthenticatedHandler = (req: Request, userId: number) => Promise<Response>;
+
+export const withAuth = (handler: AuthenticatedHandler) => {
+  return withErrorHandler(async (req: Request) => {
+    const token = await getAuthToken();
+    if (token === null) {
+      return Response.json(
+        {
+          error: "認証が必要です",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const { userId } = await verifyJWT(token);
+    return await handler(req, parseInt(userId));
+  });
 };
