@@ -24,6 +24,11 @@ export const GET = withAuth(async (req: NextRequest, userId: number) => {
           userName: true,
         },
       },
+      articleTags: {
+        include: {
+          tag: true,
+        },
+      },
     },
     take,
     skip,
