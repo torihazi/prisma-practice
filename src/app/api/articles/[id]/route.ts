@@ -102,3 +102,50 @@ export const PUT = withAuth(
     return Response.json(updatedArticle);
   }
 );
+
+export const DELETE = withAuth(
+  async (req: NextRequest, userId: number, pathParams?: PathParams) => {
+    const params = await pathParams?.params;
+    const idValidation = validateRequest(params, pathIdSchema);
+    if (!idValidation.success) {
+      return idValidation.error;
+    }
+
+    const { id } = idValidation.data;
+
+    const article = await prisma.article.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (article === null) {
+      return Response.json(
+        {
+          error: "記事が見つかりません",
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+    if (article.userId !== userId) {
+      return Response.json(
+        {
+          error: "記事を編集する権限がありません",
+        },
+        {
+          status: 403,
+        }
+      );
+    }
+
+    await prisma.article.delete({
+      where: {
+        id,
+      },
+    });
+    return Response.json({
+      message: "記事を削除しました",
+    });
+  }
+);
