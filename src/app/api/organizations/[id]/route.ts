@@ -25,6 +25,7 @@ export const GET = withAuth(
         id,
       },
       include: {
+        articles: true,
         userOrganizations: {
           include: {
             user: {

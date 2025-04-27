@@ -5,6 +5,7 @@ import { IntFilterSchema } from './IntFilterSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
 import { StringFilterSchema } from './StringFilterSchema';
 import { UserOrganizationListRelationFilterSchema } from './UserOrganizationListRelationFilterSchema';
+import { ArticleListRelationFilterSchema } from './ArticleListRelationFilterSchema';
 
 export const OrganizationWhereInputSchema: z.ZodType<Prisma.OrganizationWhereInput> = z.object({
   AND: z.union([ z.lazy(() => OrganizationWhereInputSchema),z.lazy(() => OrganizationWhereInputSchema).array() ]).optional(),
@@ -14,7 +15,8 @@ export const OrganizationWhereInputSchema: z.ZodType<Prisma.OrganizationWhereInp
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  userOrganizations: z.lazy(() => UserOrganizationListRelationFilterSchema).optional()
+  userOrganizations: z.lazy(() => UserOrganizationListRelationFilterSchema).optional(),
+  articles: z.lazy(() => ArticleListRelationFilterSchema).optional()
 }).strict();
 
 export default OrganizationWhereInputSchema;

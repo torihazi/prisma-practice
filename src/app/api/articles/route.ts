@@ -37,17 +37,35 @@ export const GET = withAuth(async (req: NextRequest, userId: number) => {
 });
 
 export const POST = withAuth(async (req: NextRequest, userId: number) => {
-  const { tagIds, ...res } = await req.json();
+  const { tagIds, organizationId, ...res } = await req.json();
   const bodyValidation = validateRequest(
     {
       ...res,
       user: { connect: { id: userId } },
+      organization:
+        organizationId === null
+          ? undefined
+          : { connect: { id: organizationId } },
       articleTags: { create: tagIds.map((tagId: number) => ({ tagId })) },
     },
     ArticleCreateInputSchema
   );
+
   if (!bodyValidation.success) {
     return bodyValidation.error;
+  }
+
+  const userOrganization = await prisma.userOrganization.findFirst({
+    where: {
+      userId,
+      organizationId: organizationId ?? undefined,
+    },
+  });
+  if (userOrganization === null) {
+    return Response.json(
+      { error: "組織が存在しない、もしくは権限がありません" },
+      { status: 404 }
+    );
   }
 
   const article = await prisma.article.create({

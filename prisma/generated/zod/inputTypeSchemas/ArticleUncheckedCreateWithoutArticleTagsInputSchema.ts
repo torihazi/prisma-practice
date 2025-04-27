@@ -8,7 +8,8 @@ export const ArticleUncheckedCreateWithoutArticleTagsInputSchema: z.ZodType<Pris
   content: z.string().min(1),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  userId: z.number().int()
+  userId: z.number().int(),
+  organizationId: z.number().int().optional().nullable()
 }).strict();
 
 export default ArticleUncheckedCreateWithoutArticleTagsInputSchema;

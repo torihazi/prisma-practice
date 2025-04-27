@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { IntFieldUpdateOperationsInputSchema } from './IntFieldUpdateOperationsInputSchema';
 import { StringFieldUpdateOperationsInputSchema } from './StringFieldUpdateOperationsInputSchema';
 import { DateTimeFieldUpdateOperationsInputSchema } from './DateTimeFieldUpdateOperationsInputSchema';
+import { NullableIntFieldUpdateOperationsInputSchema } from './NullableIntFieldUpdateOperationsInputSchema';
 import { ArticleTagUncheckedUpdateManyWithoutArticleNestedInputSchema } from './ArticleTagUncheckedUpdateManyWithoutArticleNestedInputSchema';
 
 export const ArticleUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.ArticleUncheckedUpdateWithoutUserInput> = z.object({
@@ -12,6 +13,7 @@ export const ArticleUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.Arti
   content: z.union([ z.string().min(1),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  organizationId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   articleTags: z.lazy(() => ArticleTagUncheckedUpdateManyWithoutArticleNestedInputSchema).optional()
 }).strict();
 
