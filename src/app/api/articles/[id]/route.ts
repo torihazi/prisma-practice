@@ -27,6 +27,11 @@ export const GET = withAuth(
             userName: true,
           },
         },
+        articleTags: {
+          include: {
+            tag: true,
+          },
+        },
       },
     });
     if (article === null) {
