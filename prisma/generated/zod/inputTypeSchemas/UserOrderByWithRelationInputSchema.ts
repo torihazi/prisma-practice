@@ -2,6 +2,7 @@ import type { Prisma } from '../../../../src/app/generated/prisma';
 
 import { z } from 'zod';
 import { SortOrderSchema } from './SortOrderSchema';
+import { ArticleOrderByRelationAggregateInputSchema } from './ArticleOrderByRelationAggregateInputSchema';
 
 export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
@@ -9,7 +10,8 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
   email: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  Article: z.lazy(() => ArticleOrderByRelationAggregateInputSchema).optional()
 }).strict();
 
 export default UserOrderByWithRelationInputSchema;

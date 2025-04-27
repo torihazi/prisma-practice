@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { UserWhereInputSchema } from './UserWhereInputSchema';
 import { StringFilterSchema } from './StringFilterSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
+import { ArticleListRelationFilterSchema } from './ArticleListRelationFilterSchema';
 
 export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> = z.union([
   z.object({
@@ -43,6 +44,7 @@ export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> 
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  Article: z.lazy(() => ArticleListRelationFilterSchema).optional()
 }).strict());
 
 export default UserWhereUniqueInputSchema;
