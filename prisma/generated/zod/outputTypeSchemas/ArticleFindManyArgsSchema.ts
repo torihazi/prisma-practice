@@ -6,6 +6,7 @@ import { ArticleOrderByWithRelationInputSchema } from '../inputTypeSchemas/Artic
 import { ArticleWhereUniqueInputSchema } from '../inputTypeSchemas/ArticleWhereUniqueInputSchema'
 import { ArticleScalarFieldEnumSchema } from '../inputTypeSchemas/ArticleScalarFieldEnumSchema'
 import { UserArgsSchema } from "../outputTypeSchemas/UserArgsSchema"
+import { OrganizationArgsSchema } from "../outputTypeSchemas/OrganizationArgsSchema"
 import { ArticleTagFindManyArgsSchema } from "../outputTypeSchemas/ArticleTagFindManyArgsSchema"
 import { ArticleCountOutputTypeArgsSchema } from "../outputTypeSchemas/ArticleCountOutputTypeArgsSchema"
 // Select schema needs to be in file to prevent circular imports
@@ -18,7 +19,9 @@ export const ArticleSelectSchema: z.ZodType<Prisma.ArticleSelect> = z.object({
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   userId: z.boolean().optional(),
+  organizationId: z.boolean().optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+  organization: z.union([z.boolean(),z.lazy(() => OrganizationArgsSchema)]).optional(),
   articleTags: z.union([z.boolean(),z.lazy(() => ArticleTagFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => ArticleCountOutputTypeArgsSchema)]).optional(),
 }).strict()

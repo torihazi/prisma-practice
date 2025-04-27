@@ -7,7 +7,8 @@ export const ArticleCreateManyUserInputSchema: z.ZodType<Prisma.ArticleCreateMan
   title: z.string().min(1).max(100),
   content: z.string().min(1),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  organizationId: z.number().int().optional().nullable()
 }).strict();
 
 export default ArticleCreateManyUserInputSchema;

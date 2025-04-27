@@ -1,11 +1,13 @@
 import type { Prisma } from '../../../../src/app/generated/prisma';
 
 import { z } from 'zod';
+import { ArticleCreateNestedManyWithoutOrganizationInputSchema } from './ArticleCreateNestedManyWithoutOrganizationInputSchema';
 
 export const OrganizationCreateWithoutUserOrganizationsInputSchema: z.ZodType<Prisma.OrganizationCreateWithoutUserOrganizationsInput> = z.object({
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  name: z.string().min(1).max(30)
+  name: z.string().min(1).max(30),
+  articles: z.lazy(() => ArticleCreateNestedManyWithoutOrganizationInputSchema).optional()
 }).strict();
 
 export default OrganizationCreateWithoutUserOrganizationsInputSchema;

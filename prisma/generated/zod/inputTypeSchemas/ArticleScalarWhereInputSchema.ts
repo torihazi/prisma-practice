@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { IntFilterSchema } from './IntFilterSchema';
 import { StringFilterSchema } from './StringFilterSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
+import { IntNullableFilterSchema } from './IntNullableFilterSchema';
 
 export const ArticleScalarWhereInputSchema: z.ZodType<Prisma.ArticleScalarWhereInput> = z.object({
   AND: z.union([ z.lazy(() => ArticleScalarWhereInputSchema),z.lazy(() => ArticleScalarWhereInputSchema).array() ]).optional(),
@@ -15,6 +16,7 @@ export const ArticleScalarWhereInputSchema: z.ZodType<Prisma.ArticleScalarWhereI
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   userId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  organizationId: z.union([ z.lazy(() => IntNullableFilterSchema),z.number() ]).optional().nullable(),
 }).strict();
 
 export default ArticleScalarWhereInputSchema;

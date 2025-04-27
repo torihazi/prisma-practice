@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { OrganizationWhereInputSchema } from './OrganizationWhereInputSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
 import { UserOrganizationListRelationFilterSchema } from './UserOrganizationListRelationFilterSchema';
+import { ArticleListRelationFilterSchema } from './ArticleListRelationFilterSchema';
 
 export const OrganizationWhereUniqueInputSchema: z.ZodType<Prisma.OrganizationWhereUniqueInput> = z.union([
   z.object({
@@ -25,7 +26,8 @@ export const OrganizationWhereUniqueInputSchema: z.ZodType<Prisma.OrganizationWh
   NOT: z.union([ z.lazy(() => OrganizationWhereInputSchema),z.lazy(() => OrganizationWhereInputSchema).array() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
-  userOrganizations: z.lazy(() => UserOrganizationListRelationFilterSchema).optional()
+  userOrganizations: z.lazy(() => UserOrganizationListRelationFilterSchema).optional(),
+  articles: z.lazy(() => ArticleListRelationFilterSchema).optional()
 }).strict());
 
 export default OrganizationWhereUniqueInputSchema;

@@ -49,11 +49,14 @@ model Article {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  userId      Int          @map("user_id")
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  articleTags ArticleTag[]
+  userId         Int           @map("user_id")
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId Int?          @map("organization_id")
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  articleTags    ArticleTag[]
 
   @@index([userId])
+  @@index([organizationId])
   @@map("articles")
 }
 
@@ -92,6 +95,7 @@ model Organization {
   /// @zod.string.min(1).max(30)
   name              String             @unique @db.VarChar(30)
   userOrganizations UserOrganization[]
+  articles          Article[]
 
   @@map("organizations")
 }

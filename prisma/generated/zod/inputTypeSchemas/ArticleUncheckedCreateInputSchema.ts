@@ -10,6 +10,7 @@ export const ArticleUncheckedCreateInputSchema: z.ZodType<Prisma.ArticleUnchecke
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   userId: z.number().int(),
+  organizationId: z.number().int().optional().nullable(),
   articleTags: z.lazy(() => ArticleTagUncheckedCreateNestedManyWithoutArticleInputSchema).optional()
 }).strict();
 

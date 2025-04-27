@@ -11,6 +11,7 @@ export const ArticleSchema = z.object({
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
   userId: z.number().int(),
+  organizationId: z.number().int().nullable(),
 })
 
 export type Article = z.infer<typeof ArticleSchema>
