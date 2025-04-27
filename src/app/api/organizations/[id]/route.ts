@@ -4,7 +4,7 @@ import { validateRequest } from "@/lib/api/validation";
 import { withAuth } from "@/lib/api/handler";
 import { NextRequest } from "next/server";
 import { pathIdSchema } from "@/schemas/requestSchema";
-import { ArticleUpdateInputSchema } from "../../../../../prisma/generated/zod";
+import { OrganizationUpdateInputSchema } from "../../../../../prisma/generated/zod";
 
 export const GET = withAuth(
   async (_req: NextRequest, _userId: number, pathParams?: PathParams) => {
@@ -57,60 +57,38 @@ export const PUT = withAuth(
 
     const { id } = idValidation.data;
 
-    const { tagIds, ...res } = await req.json();
-    const bodyValidation = validateRequest(
-      {
-        ...res,
-        user: { connect: { id: userId } },
-        articleTags: { create: tagIds.map((tagId: number) => ({ tagId })) },
-      },
-      ArticleUpdateInputSchema
-    );
+    const res = await req.json();
+    const bodyValidation = validateRequest(res, OrganizationUpdateInputSchema);
     if (!bodyValidation.success) {
       return bodyValidation.error;
     }
 
-    const article = await prisma.article.findUnique({
+    const organization = await prisma.userOrganization.findFirst({
       where: {
-        id,
+        userId,
+        organizationId: id,
+        role: "ADMIN",
       },
     });
-    if (article === null) {
+    if (organization === null) {
       return Response.json(
         {
-          error: "記事が見つかりません",
+          error: "組織が存在しない、もしくは権限がありません",
         },
         {
           status: 404,
         }
       );
     }
-    if (article.userId !== userId) {
-      return Response.json(
-        {
-          error: "記事を編集する権限がありません",
-        },
-        {
-          status: 403,
-        }
-      );
-    }
 
-    const updateArticle = await prisma.$transaction(async (tx) => {
-      await tx.articleTag.deleteMany({
-        where: {
-          articleId: id,
-        },
-      });
-      return await tx.article.update({
-        where: {
-          id,
-        },
-        data: bodyValidation.data,
-      });
+    const updateOrganization = await prisma.organization.update({
+      where: {
+        id,
+      },
+      data: bodyValidation.data,
     });
 
-    return Response.json(updateArticle);
+    return Response.json(updateOrganization);
   }
 );
 
