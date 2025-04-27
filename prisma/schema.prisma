@@ -24,15 +24,16 @@ generator zod {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id                Int                @id @default(autoincrement())
   /// @zod.string.min(1).max(30)
-  userName  String    @unique @map("user_name") @db.VarChar(30)
+  userName          String             @unique @map("user_name") @db.VarChar(30)
   /// @zod.string.email().min(1).max(255)
-  email     String    @unique @db.VarChar(255)
-  password  String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
-  articles  Article[]
+  email             String             @unique @db.VarChar(255)
+  password          String
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @default(now()) @updatedAt @map("updated_at")
+  articles          Article[]
+  userOrganizations UserOrganization[]
 
   @@index([email])
   @@index([userName])
@@ -81,4 +82,37 @@ model ArticleTag {
   @@index([articleId])
   @@index([tagId])
   @@map("article_tags")
+}
+
+model Organization {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  /// @zod.string.min(1).max(30)
+  name              String             @unique @db.VarChar(30)
+  userOrganizations UserOrganization[]
+
+  @@map("organizations")
+}
+
+model UserOrganization {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  userId         Int          @map("user_id")
+  organizationId Int          @map("organization_id")
+  role           Role         @default(MEMBER)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([organizationId])
+  @@map("user_organizations")
+}
+
+enum Role {
+  ADMIN
+  MEMBER
 }

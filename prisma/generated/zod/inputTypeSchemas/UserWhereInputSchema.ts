@@ -5,6 +5,7 @@ import { IntFilterSchema } from './IntFilterSchema';
 import { StringFilterSchema } from './StringFilterSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
 import { ArticleListRelationFilterSchema } from './ArticleListRelationFilterSchema';
+import { UserOrganizationListRelationFilterSchema } from './UserOrganizationListRelationFilterSchema';
 
 export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
   AND: z.union([ z.lazy(() => UserWhereInputSchema),z.lazy(() => UserWhereInputSchema).array() ]).optional(),
@@ -16,7 +17,8 @@ export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
-  articles: z.lazy(() => ArticleListRelationFilterSchema).optional()
+  articles: z.lazy(() => ArticleListRelationFilterSchema).optional(),
+  userOrganizations: z.lazy(() => UserOrganizationListRelationFilterSchema).optional()
 }).strict();
 
 export default UserWhereInputSchema;
