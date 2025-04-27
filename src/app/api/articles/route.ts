@@ -2,23 +2,9 @@ import prisma from "@/lib/prisma";
 import { withErrorHandler } from "@/lib/api/handler";
 import { validateRequest } from "@/lib/api/validation";
 import { ArticleCreateWithoutUserInputSchema } from "../../../../prisma/generated/zod/inputTypeSchemas/ArticleCreateWithoutUserInputSchema";
-import { getAuthToken, verifyJWT } from "@/lib/api/auth";
+import { withAuth } from "@/lib/api/handler";
 
-export const POST = withErrorHandler(async (req: Request) => {
-  const token = await getAuthToken();
-  if (token === null) {
-    return Response.json(
-      {
-        error: "認証が必要です",
-      },
-      {
-        status: 401,
-      }
-    );
-  }
-
-  const { userId } = await verifyJWT(token);
-
+export const POST = withAuth(async (req: Request, userId: number) => {
   const res = await req.json();
   const bodyValidation = validateRequest(
     res,
@@ -33,7 +19,7 @@ export const POST = withErrorHandler(async (req: Request) => {
     data: {
       title,
       content,
-      userId: parseInt(userId),
+      userId,
     },
   });
   return Response.json(article);
