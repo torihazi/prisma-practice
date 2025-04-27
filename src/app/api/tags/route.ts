@@ -17,19 +17,11 @@ export const GET = withAuth(async (req: NextRequest, userId: number) => {
 
   const { take, skip } = queryValidation.data;
 
-  const articles = await prisma.article.findMany({
-    include: {
-      user: {
-        select: {
-          id: true,
-          userName: true,
-        },
-      },
-    },
+  const tags = await prisma.tag.findMany({
     take,
     skip,
   });
-  return Response.json(articles);
+  return Response.json(tags);
 });
 
 export const POST = withAuth(async (req: NextRequest, userId: number) => {
