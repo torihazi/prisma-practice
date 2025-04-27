@@ -1,10 +1,12 @@
 import { Prisma } from "@/app/generated/prisma";
 import { USER_FIELD_NAMES } from "@/lib/constants/user";
 import { getAuthToken, verifyJWT } from "./auth";
-type ApiHandler = (req: Request) => Promise<Response>;
+import { NextRequest } from "next/server";
+
+type ApiHandler = (req: NextRequest) => Promise<Response>;
 
 export const withErrorHandler = (handler: ApiHandler) => {
-  return async (req: Request) => {
+  return async (req: NextRequest) => {
     try {
       return await handler(req);
     } catch (error) {
@@ -42,10 +44,13 @@ export const getPrismaErrorMessage = (
   }
 };
 
-type AuthenticatedHandler = (req: Request, userId: number) => Promise<Response>;
+type AuthenticatedHandler = (
+  req: NextRequest,
+  userId: number
+) => Promise<Response>;
 
 export const withAuth = (handler: AuthenticatedHandler) => {
-  return withErrorHandler(async (req: Request) => {
+  return withErrorHandler(async (req: NextRequest) => {
     const token = await getAuthToken();
     if (token === null) {
       return Response.json(

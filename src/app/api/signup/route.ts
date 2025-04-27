@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { withErrorHandler } from "@/lib/api/handler";
 import { validateRequest } from "@/lib/api/validation";
 
-export const POST = withErrorHandler(async (req: Request) => {
+export const POST = withErrorHandler(async (req: NextRequest) => {
   const res = await req.json();
   const bodyValidation = validateRequest(res, UserCreateInputSchema);
   if (!bodyValidation.success) {
