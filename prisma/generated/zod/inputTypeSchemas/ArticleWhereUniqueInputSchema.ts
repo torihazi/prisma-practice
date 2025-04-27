@@ -7,6 +7,7 @@ import { DateTimeFilterSchema } from './DateTimeFilterSchema';
 import { IntFilterSchema } from './IntFilterSchema';
 import { UserScalarRelationFilterSchema } from './UserScalarRelationFilterSchema';
 import { UserWhereInputSchema } from './UserWhereInputSchema';
+import { ArticleTagListRelationFilterSchema } from './ArticleTagListRelationFilterSchema';
 
 export const ArticleWhereUniqueInputSchema: z.ZodType<Prisma.ArticleWhereUniqueInput> = z.object({
   id: z.number().int()
@@ -22,6 +23,7 @@ export const ArticleWhereUniqueInputSchema: z.ZodType<Prisma.ArticleWhereUniqueI
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   userId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
+  ArticleTag: z.lazy(() => ArticleTagListRelationFilterSchema).optional()
 }).strict());
 
 export default ArticleWhereUniqueInputSchema;

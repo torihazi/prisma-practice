@@ -7,6 +7,8 @@ import { ArticleUncheckedCreateInputSchema } from '../inputTypeSchemas/ArticleUn
 import { ArticleUpdateInputSchema } from '../inputTypeSchemas/ArticleUpdateInputSchema'
 import { ArticleUncheckedUpdateInputSchema } from '../inputTypeSchemas/ArticleUncheckedUpdateInputSchema'
 import { UserArgsSchema } from "../outputTypeSchemas/UserArgsSchema"
+import { ArticleTagFindManyArgsSchema } from "../outputTypeSchemas/ArticleTagFindManyArgsSchema"
+import { ArticleCountOutputTypeArgsSchema } from "../outputTypeSchemas/ArticleCountOutputTypeArgsSchema"
 // Select schema needs to be in file to prevent circular imports
 //------------------------------------------------------
 
@@ -18,6 +20,8 @@ export const ArticleSelectSchema: z.ZodType<Prisma.ArticleSelect> = z.object({
   updatedAt: z.boolean().optional(),
   userId: z.boolean().optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+  ArticleTag: z.union([z.boolean(),z.lazy(() => ArticleTagFindManyArgsSchema)]).optional(),
+  _count: z.union([z.boolean(),z.lazy(() => ArticleCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
 export const ArticleUpsertArgsSchema: z.ZodType<Prisma.ArticleUpsertArgs> = z.object({
