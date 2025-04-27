@@ -14,7 +14,7 @@ export const TagWhereInputSchema: z.ZodType<Prisma.TagWhereInput> = z.object({
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
-  ArticleTag: z.lazy(() => ArticleTagListRelationFilterSchema).optional()
+  articleTags: z.lazy(() => ArticleTagListRelationFilterSchema).optional()
 }).strict();
 
 export default TagWhereInputSchema;

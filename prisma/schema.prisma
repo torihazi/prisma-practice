@@ -32,7 +32,7 @@ model User {
   password  String
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
-  Article   Article[]
+  articles  Article[]
 
   @@index([email])
   @@index([userName])
@@ -48,21 +48,21 @@ model Article {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  userId     Int          @map("user_id")
-  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ArticleTag ArticleTag[]
+  userId      Int          @map("user_id")
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  articleTags ArticleTag[]
 
   @@index([userId])
   @@map("articles")
 }
 
 model Tag {
-  id         Int          @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   /// @zod.string.min(1).max(30)
-  name       String       @unique @db.VarChar(30)
-  createdAt  DateTime     @default(now()) @map("created_at")
-  updatedAt  DateTime     @default(now()) @updatedAt @map("updated_at")
-  ArticleTag ArticleTag[]
+  name        String       @unique @db.VarChar(30)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
+  articleTags ArticleTag[]
 
   @@index([name])
   @@map("tags")

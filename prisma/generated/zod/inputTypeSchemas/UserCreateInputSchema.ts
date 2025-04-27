@@ -9,7 +9,7 @@ export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object
   password: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  Article: z.lazy(() => ArticleCreateNestedManyWithoutUserInputSchema).optional()
+  articles: z.lazy(() => ArticleCreateNestedManyWithoutUserInputSchema).optional()
 }).strict();
 
 export default UserCreateInputSchema;

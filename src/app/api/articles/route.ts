@@ -1,10 +1,10 @@
 import prisma from "@/lib/prisma";
 import { withErrorHandler } from "@/lib/api/handler";
 import { validateRequest } from "@/lib/api/validation";
-import { ArticleCreateWithoutUserInputSchema } from "../../../../prisma/generated/zod/inputTypeSchemas/ArticleCreateWithoutUserInputSchema";
 import { withAuth } from "@/lib/api/handler";
 import { NextRequest } from "next/server";
 import { paginationQuerySchema } from "@/schemas/requestSchema";
+import { ArticleCreateInputSchema } from "../../../../prisma/generated/zod";
 
 export const GET = withAuth(async (req: NextRequest, userId: number) => {
   const searchParams = req.nextUrl.searchParams;
@@ -32,22 +32,21 @@ export const GET = withAuth(async (req: NextRequest, userId: number) => {
 });
 
 export const POST = withAuth(async (req: NextRequest, userId: number) => {
-  const res = await req.json();
+  const { tagIds, ...res } = await req.json();
   const bodyValidation = validateRequest(
-    res,
-    ArticleCreateWithoutUserInputSchema
+    {
+      ...res,
+      user: { connect: { id: userId } },
+      articleTags: { create: tagIds.map((tagId: number) => ({ tagId })) },
+    },
+    ArticleCreateInputSchema
   );
   if (!bodyValidation.success) {
     return bodyValidation.error;
   }
-  const { title, content } = bodyValidation.data;
 
   const article = await prisma.article.create({
-    data: {
-      title,
-      content,
-      userId,
-    },
+    data: bodyValidation.data,
   });
   return Response.json(article);
 });

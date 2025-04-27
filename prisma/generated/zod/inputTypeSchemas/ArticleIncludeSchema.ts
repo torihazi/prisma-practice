@@ -6,7 +6,7 @@ import { ArticleCountOutputTypeArgsSchema } from "../outputTypeSchemas/ArticleCo
 
 export const ArticleIncludeSchema: z.ZodType<Prisma.ArticleInclude> = z.object({
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
-  ArticleTag: z.union([z.boolean(),z.lazy(() => ArticleTagFindManyArgsSchema)]).optional(),
+  articleTags: z.union([z.boolean(),z.lazy(() => ArticleTagFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => ArticleCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 

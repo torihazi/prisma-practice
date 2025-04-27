@@ -7,7 +7,7 @@ export const TagCreateInputSchema: z.ZodType<Prisma.TagCreateInput> = z.object({
   name: z.string().min(1).max(30),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  ArticleTag: z.lazy(() => ArticleTagCreateNestedManyWithoutTagInputSchema).optional()
+  articleTags: z.lazy(() => ArticleTagCreateNestedManyWithoutTagInputSchema).optional()
 }).strict();
 
 export default TagCreateInputSchema;

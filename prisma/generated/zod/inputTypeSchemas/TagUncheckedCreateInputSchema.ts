@@ -8,7 +8,7 @@ export const TagUncheckedCreateInputSchema: z.ZodType<Prisma.TagUncheckedCreateI
   name: z.string().min(1).max(30),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  ArticleTag: z.lazy(() => ArticleTagUncheckedCreateNestedManyWithoutTagInputSchema).optional()
+  articleTags: z.lazy(() => ArticleTagUncheckedCreateNestedManyWithoutTagInputSchema).optional()
 }).strict();
 
 export default TagUncheckedCreateInputSchema;

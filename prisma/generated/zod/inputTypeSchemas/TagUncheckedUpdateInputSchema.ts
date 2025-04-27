@@ -11,7 +11,7 @@ export const TagUncheckedUpdateInputSchema: z.ZodType<Prisma.TagUncheckedUpdateI
   name: z.union([ z.string().min(1).max(30),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  ArticleTag: z.lazy(() => ArticleTagUncheckedUpdateManyWithoutTagNestedInputSchema).optional()
+  articleTags: z.lazy(() => ArticleTagUncheckedUpdateManyWithoutTagNestedInputSchema).optional()
 }).strict();
 
 export default TagUncheckedUpdateInputSchema;

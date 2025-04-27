@@ -9,7 +9,7 @@ export const ArticleUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.Arti
   content: z.string().min(1),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  ArticleTag: z.lazy(() => ArticleTagUncheckedCreateNestedManyWithoutArticleInputSchema).optional()
+  articleTags: z.lazy(() => ArticleTagUncheckedCreateNestedManyWithoutArticleInputSchema).optional()
 }).strict();
 
 export default ArticleUncheckedCreateWithoutUserInputSchema;

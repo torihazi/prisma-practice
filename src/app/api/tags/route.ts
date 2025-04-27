@@ -5,7 +5,7 @@ import { ArticleCreateWithoutUserInputSchema } from "../../../../prisma/generate
 import { withAuth } from "@/lib/api/handler";
 import { NextRequest } from "next/server";
 import { paginationQuerySchema } from "@/schemas/requestSchema";
-import { TagCreateWithoutArticleTagInputSchema } from "../../../../prisma/generated/zod";
+import { TagCreateWithoutArticleTagsInputSchema } from "../../../../prisma/generated/zod";
 
 export const GET = withAuth(async (req: NextRequest, userId: number) => {
   const searchParams = req.nextUrl.searchParams;
@@ -28,7 +28,7 @@ export const POST = withAuth(async (req: NextRequest, userId: number) => {
   const res = await req.json();
   const bodyValidation = validateRequest(
     res,
-    TagCreateWithoutArticleTagInputSchema
+    TagCreateWithoutArticleTagsInputSchema
   );
   if (!bodyValidation.success) {
     return bodyValidation.error;

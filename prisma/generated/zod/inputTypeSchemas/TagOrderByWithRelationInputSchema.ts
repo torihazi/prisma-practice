@@ -9,7 +9,7 @@ export const TagOrderByWithRelationInputSchema: z.ZodType<Prisma.TagOrderByWithR
   name: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
-  ArticleTag: z.lazy(() => ArticleTagOrderByRelationAggregateInputSchema).optional()
+  articleTags: z.lazy(() => ArticleTagOrderByRelationAggregateInputSchema).optional()
 }).strict();
 
 export default TagOrderByWithRelationInputSchema;
