@@ -1,0 +1,1 @@
+ALTER TABLE organizations ADD CONSTRAINT organizations_name_length CHECK (length(name) >= 1);
