@@ -15,4 +15,13 @@ export const paginationQuerySchema = z.object({
     .refine((val) => val === undefined || !isNaN(val), {
       message: "skipの形式が異なります",
     }),
-}) as z.ZodType<{ take?: number; skip?: number }>;
+});
+
+export const pathIdSchema = z.object({
+  id: z
+    .string()
+    .transform((val) => parseInt(val))
+    .refine((val) => !isNaN(val), {
+      message: "idの形式が異なります",
+    }),
+});

@@ -3,12 +3,19 @@ import { USER_FIELD_NAMES } from "@/lib/constants/user";
 import { getAuthToken, verifyJWT } from "./auth";
 import { NextRequest } from "next/server";
 
-type ApiHandler = (req: NextRequest) => Promise<Response>;
+export type PathParams = {
+  params: Promise<{ [key: string]: string }>;
+};
+
+type ApiHandler = (
+  req: NextRequest,
+  pathParams?: PathParams
+) => Promise<Response>;
 
 export const withErrorHandler = (handler: ApiHandler) => {
-  return async (req: NextRequest) => {
+  return async (req: NextRequest, pathParams: PathParams) => {
     try {
-      return await handler(req);
+      return await handler(req, pathParams);
     } catch (error) {
       console.error(error);
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -46,11 +53,12 @@ export const getPrismaErrorMessage = (
 
 type AuthenticatedHandler = (
   req: NextRequest,
-  userId: number
+  userId: number,
+  pathParams?: PathParams
 ) => Promise<Response>;
 
 export const withAuth = (handler: AuthenticatedHandler) => {
-  return withErrorHandler(async (req: NextRequest) => {
+  return withErrorHandler(async (req: NextRequest, pathParams?: PathParams) => {
     const token = await getAuthToken();
     if (token === null) {
       return Response.json(
@@ -64,6 +72,6 @@ export const withAuth = (handler: AuthenticatedHandler) => {
     }
 
     const { userId } = await verifyJWT(token);
-    return await handler(req, parseInt(userId));
+    return await handler(req, parseInt(userId), pathParams);
   });
 };
