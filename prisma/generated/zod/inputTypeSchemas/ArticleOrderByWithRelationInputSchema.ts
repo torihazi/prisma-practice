@@ -13,7 +13,7 @@ export const ArticleOrderByWithRelationInputSchema: z.ZodType<Prisma.ArticleOrde
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
-  ArticleTag: z.lazy(() => ArticleTagOrderByRelationAggregateInputSchema).optional()
+  articleTags: z.lazy(() => ArticleTagOrderByRelationAggregateInputSchema).optional()
 }).strict();
 
 export default ArticleOrderByWithRelationInputSchema;

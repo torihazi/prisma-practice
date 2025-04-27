@@ -2,7 +2,7 @@ import type { Prisma } from '../../../../src/app/generated/prisma';
 
 import { z } from 'zod';
 
-export const UserCreateWithoutArticleInputSchema: z.ZodType<Prisma.UserCreateWithoutArticleInput> = z.object({
+export const UserCreateWithoutArticlesInputSchema: z.ZodType<Prisma.UserCreateWithoutArticlesInput> = z.object({
   userName: z.string().min(1).max(30),
   email: z.string().email().min(1).max(255),
   password: z.string(),
@@ -10,4 +10,4 @@ export const UserCreateWithoutArticleInputSchema: z.ZodType<Prisma.UserCreateWit
   updatedAt: z.coerce.date().optional()
 }).strict();
 
-export default UserCreateWithoutArticleInputSchema;
+export default UserCreateWithoutArticlesInputSchema;

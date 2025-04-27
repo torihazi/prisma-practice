@@ -12,7 +12,7 @@ export const ArticleUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.Arti
   content: z.union([ z.string().min(1),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  ArticleTag: z.lazy(() => ArticleTagUncheckedUpdateManyWithoutArticleNestedInputSchema).optional()
+  articleTags: z.lazy(() => ArticleTagUncheckedUpdateManyWithoutArticleNestedInputSchema).optional()
 }).strict();
 
 export default ArticleUncheckedUpdateWithoutUserInputSchema;

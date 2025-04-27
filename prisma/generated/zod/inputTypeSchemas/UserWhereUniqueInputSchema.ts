@@ -44,7 +44,7 @@ export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> 
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
-  Article: z.lazy(() => ArticleListRelationFilterSchema).optional()
+  articles: z.lazy(() => ArticleListRelationFilterSchema).optional()
 }).strict());
 
 export default UserWhereUniqueInputSchema;

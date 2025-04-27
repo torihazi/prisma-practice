@@ -4,7 +4,7 @@ import { ArticleTagFindManyArgsSchema } from "../outputTypeSchemas/ArticleTagFin
 import { TagCountOutputTypeArgsSchema } from "../outputTypeSchemas/TagCountOutputTypeArgsSchema"
 
 export const TagIncludeSchema: z.ZodType<Prisma.TagInclude> = z.object({
-  ArticleTag: z.union([z.boolean(),z.lazy(() => ArticleTagFindManyArgsSchema)]).optional(),
+  articleTags: z.union([z.boolean(),z.lazy(() => ArticleTagFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TagCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
