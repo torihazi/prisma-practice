@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-export const validateRequest = <T>(
+export const validateRequest = <Output, Input = Output>(
   data: unknown,
-  schema: z.ZodSchema<T>
+  schema: z.ZodSchema<Output, z.ZodTypeDef, Input>
 ):
   | {
       success: true;
-      data: T;
+      data: Output;
     }
   | {
       success: false;
