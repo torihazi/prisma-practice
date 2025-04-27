@@ -1,6 +1,7 @@
 import type { Prisma } from '../../../../src/app/generated/prisma';
 
 import { z } from 'zod';
+import { ArticleTagUncheckedCreateNestedManyWithoutArticleInputSchema } from './ArticleTagUncheckedCreateNestedManyWithoutArticleInputSchema';
 
 export const ArticleUncheckedCreateInputSchema: z.ZodType<Prisma.ArticleUncheckedCreateInput> = z.object({
   id: z.number().int().optional(),
@@ -8,7 +9,8 @@ export const ArticleUncheckedCreateInputSchema: z.ZodType<Prisma.ArticleUnchecke
   content: z.string().min(1),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  userId: z.number().int()
+  userId: z.number().int(),
+  ArticleTag: z.lazy(() => ArticleTagUncheckedCreateNestedManyWithoutArticleInputSchema).optional()
 }).strict();
 
 export default ArticleUncheckedCreateInputSchema;
