@@ -3,8 +3,8 @@ import { PathParams, withErrorHandler } from "@/lib/api/handler";
 import { validateRequest } from "@/lib/api/validation";
 import { withAuth } from "@/lib/api/handler";
 import { NextRequest } from "next/server";
-import { paginationQuerySchema, pathIdSchema } from "@/schemas/requestSchema";
-import { ArticleUpdateWithoutUserInputSchema } from "../../../../../prisma/generated/zod/inputTypeSchemas/ArticleUpdateWithoutUserInputSchema";
+import { pathIdSchema } from "@/schemas/requestSchema";
+import { ArticleUpdateInputSchema } from "../../../../../prisma/generated/zod";
 
 export const GET = withAuth(
   async (_req: NextRequest, _userId: number, pathParams?: PathParams) => {
@@ -53,10 +53,14 @@ export const PUT = withAuth(
 
     const { id } = idValidation.data;
 
-    const res = await req.json();
+    const { tagIds, ...res } = await req.json();
     const bodyValidation = validateRequest(
-      res,
-      ArticleUpdateWithoutUserInputSchema
+      {
+        ...res,
+        user: { connect: { id: userId } },
+        articleTags: { create: tagIds.map((tagId: number) => ({ tagId })) },
+      },
+      ArticleUpdateInputSchema
     );
     if (!bodyValidation.success) {
       return bodyValidation.error;
@@ -88,18 +92,21 @@ export const PUT = withAuth(
       );
     }
 
-    const { title, content } = bodyValidation.data;
-
-    const updatedArticle = await prisma.article.update({
-      where: {
-        id,
-      },
-      data: {
-        title,
-        content,
-      },
+    const updateArticle = await prisma.$transaction(async (tx) => {
+      await tx.articleTag.deleteMany({
+        where: {
+          articleId: id,
+        },
+      });
+      return await tx.article.update({
+        where: {
+          id,
+        },
+        data: bodyValidation.data,
+      });
     });
-    return Response.json(updatedArticle);
+
+    return Response.json(updateArticle);
   }
 );
 
